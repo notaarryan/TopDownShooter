@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Camera cam = Camera.main;
         float x = 0f;
         float y = 0f;
 
@@ -31,6 +32,14 @@ public class PlayerMovement : MonoBehaviour
             x += 1;
         }
         Vector2 direction = new Vector2(x, y).normalized;
-        transform.Translate(direction * speed * Time.deltaTime);
+        Vector2 mousePositionPx = Mouse.current.position.ReadValue();
+        Vector3 mousePositionPoint3d = cam.ScreenToWorldPoint(
+            new Vector3(mousePositionPx.x, mousePositionPx.y, 0)
+        );
+        Vector2 mouseWorld = new Vector2(mousePositionPoint3d.x, mousePositionPoint3d.y);
+        transform.position += (Vector3)(direction * speed * Time.deltaTime);
+        Vector2 aimDirection = (Vector2)mouseWorld - (Vector2)transform.position;
+        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }

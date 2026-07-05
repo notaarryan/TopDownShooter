@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5f;
+    public GameObject bulletPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() { }
@@ -41,5 +42,14 @@ public class PlayerMovement : MonoBehaviour
         Vector2 aimDirection = (Vector2)mouseWorld - (Vector2)transform.position;
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            GameObject newBullet = Instantiate(
+                bulletPrefab,
+                transform.position,
+                Quaternion.identity
+            );
+            newBullet.GetComponent<BulletMovement>().direction = aimDirection;
+        }
     }
 }

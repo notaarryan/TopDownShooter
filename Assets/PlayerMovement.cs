@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5f;
     public GameObject bulletPrefab;
+    public Transform firePoint;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() { }
@@ -46,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         {
             GameObject newBullet = Instantiate(
                 bulletPrefab,
-                transform.position,
+                firePoint.position,
                 Quaternion.identity
             );
             newBullet.GetComponent<BulletMovement>().direction = aimDirection;
